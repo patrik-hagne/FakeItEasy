@@ -455,7 +455,7 @@
             var proxyPassedToEquals = new FakedProxyWithManagerSpecified { FakeManager = new FakeManager() };
 
             var equalsMethod = typeof(object).GetMethod("Equals", new[] { typeof(object) });
-            
+
             var interceptedCall = A.Fake<IWritableFakeObjectCall>();
             A.CallTo(() => interceptedCall.Method).Returns(equalsMethod);
             A.CallTo(() => interceptedCall.FakedObject).Returns(proxyPassedToEquals);
@@ -603,8 +603,7 @@
         public void Should_invoke_listener_after_call_has_been_intercepted()
         {
             // Arrange
-            var interceptedCall = A.Fake<IWritableFakeObjectCall>(x => x.Implements(typeof(ICompletedFakeObjectCall)));
-            A.CallTo(() => interceptedCall.AsReadOnly()).Returns((ICompletedFakeObjectCall)interceptedCall);
+            var interceptedCall = A.Fake<IWritableFakeObjectCall>();
 
             var listener = A.Fake<IInterceptionListener>();
             var manager = new RaisableFakeManager();
@@ -626,8 +625,7 @@
         public void Should_invoke_listener_after_call_has_been_intercepted_when_application_of_rule_throws()
         {
             // Arrange
-            var interceptedCall = A.Fake<IWritableFakeObjectCall>(x => x.Implements(typeof(ICompletedFakeObjectCall)));
-            A.CallTo(() => interceptedCall.AsReadOnly()).Returns((ICompletedFakeObjectCall)interceptedCall);
+            var interceptedCall = A.Fake<IWritableFakeObjectCall>();
 
             var listener = A.Fake<IInterceptionListener>();
             var manager = new RaisableFakeManager();

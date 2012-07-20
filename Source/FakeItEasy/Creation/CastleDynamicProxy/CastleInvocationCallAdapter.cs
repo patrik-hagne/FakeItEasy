@@ -11,7 +11,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     /// </summary>
     [Serializable]
     internal class CastleInvocationCallAdapter
-        : IWritableFakeObjectCall, ICompletedFakeObjectCall
+        : IWritableFakeObjectCall
     {
         private readonly IInvocation invocation;
 
@@ -61,15 +61,6 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         public object FakedObject
         {
             get { return this.invocation.Proxy; }
-        }
-
-        /// <summary>
-        /// Freezes the call so that it can no longer be modified.
-        /// </summary>
-        /// <returns>A completed fake object call.</returns>
-        public ICompletedFakeObjectCall AsReadOnly()
-        {
-            return this;
         }
 
         /// <summary>

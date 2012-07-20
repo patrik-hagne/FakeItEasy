@@ -8,7 +8,7 @@ namespace FakeItEasy.Tests
     /// A fake implementation of IFakeObjectCall, used for testing.
     /// </summary>
     public class FakeCall
-        : IInterceptedFakeObjectCall, ICompletedFakeObjectCall
+        : IInterceptedFakeObjectCall
     {
         public FakeCall()
         {
@@ -64,11 +64,6 @@ namespace FakeItEasy.Tests
         public void SetReturnValue(object returnValue)
         {
             this.ReturnValue = returnValue;
-        }
-
-        public ICompletedFakeObjectCall AsReadOnly()
-        {
-            return this;
         }
 
         public void CallBaseMethod()

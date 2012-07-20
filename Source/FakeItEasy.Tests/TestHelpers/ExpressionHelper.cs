@@ -87,8 +87,6 @@ namespace FakeItEasy.Tests.TestHelpers
             A.CallTo(() => frozen.ReturnValue)
                 .ReturnsLazily(x => Fake.GetCalls(result).Matching<IInterceptedFakeObjectCall>(c => c.SetReturnValue(A<object>._)).Last().Arguments[0]);
 
-            A.CallTo(() => result.AsReadOnly()).Returns(frozen);
-
             return result;
         }
 

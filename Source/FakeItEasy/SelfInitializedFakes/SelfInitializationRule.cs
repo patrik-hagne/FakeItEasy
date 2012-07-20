@@ -55,7 +55,7 @@
             if (this.recorder.IsRecording)
             {
                 this.wrappedRule.Apply(fakeObjectCall);
-                this.recorder.RecordCall(fakeObjectCall.AsReadOnly());
+                this.recorder.RecordCall(fakeObjectCall);
             }
             else
             {

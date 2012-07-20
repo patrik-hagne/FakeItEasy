@@ -544,7 +544,7 @@ namespace FakeItEasy.Tests
 
         private IEnumerable<ICompletedFakeObjectCall> CreateFakeCallCollection<TFake>(params Expression<Action<TFake>>[] callSpecifications)
         {
-            return callSpecifications.Select(x => ExpressionHelper.CreateFakeCall<TFake>(x).AsReadOnly());
+            return callSpecifications.Select(ExpressionHelper.CreateFakeCall<TFake>);
         }
     }
 }

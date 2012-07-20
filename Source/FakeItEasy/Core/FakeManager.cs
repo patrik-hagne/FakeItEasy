@@ -185,16 +185,14 @@ namespace FakeItEasy.Core
             }
             finally
             {
-                var readonlyCall = fakeObjectCall.AsReadOnly();
-        
                 if (!interceptedCall.IgnoreCallInRecording)
                 {
-                    FakeScope.Current.AddInterceptedCall(this, readonlyCall);
+                    FakeScope.Current.AddInterceptedCall(this, fakeObjectCall);
                 }
 
                 foreach (var listener in this.interceptionListeners.Reverse())
                 {
-                    listener.OnAfterCallIntercepted(readonlyCall, ruleToUse.Rule);
+                    listener.OnAfterCallIntercepted(fakeObjectCall, ruleToUse.Rule);
                 }
             }
         }
@@ -260,14 +258,14 @@ namespace FakeItEasy.Core
                 this.call.SetArgumentValue(index, value);
             }
 
-            public ICompletedFakeObjectCall AsReadOnly()
-            {
-                return this.call.AsReadOnly();
-            }
-
             public void DoNotRecordCall()
             {
                 this.IgnoreCallInRecording = true;
+            }
+
+            public object ReturnValue
+            {
+                get { return this.call.ReturnValue; }
             }
         }
     }

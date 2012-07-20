@@ -4,7 +4,7 @@ namespace FakeItEasy.Core
     /// Represents a fake object call that can be edited.
     /// </summary>
     public interface IWritableFakeObjectCall
-        : IFakeObjectCall
+        : ICompletedFakeObjectCall
     {
         /// <summary>
         /// Sets the return value of the call.
@@ -23,11 +23,5 @@ namespace FakeItEasy.Core
         /// <param name="index">The index of the argument to set the value of.</param>
         /// <param name="value">The value to set to the argument.</param>
         void SetArgumentValue(int index, object value);
-
-        /// <summary>
-        /// Freezes the call so that it can no longer be modified.
-        /// </summary>
-        /// <returns>A completed fake object call.</returns>
-        ICompletedFakeObjectCall AsReadOnly();
     }
 }

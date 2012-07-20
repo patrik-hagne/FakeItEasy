@@ -113,21 +113,6 @@
             proxy.Invoke();
         }
 
-        [Test]
-        public void Should_create_calls_that_exposes_return_value_when_converted_to_read_only()
-        {
-            // Arrange
-            var proxy = this.GenerateProxy<Func<string>>(x =>
-                {
-                    x.SetReturnValue("foo");
-
-                    Assert.That(x.AsReadOnly().ReturnValue, Is.EqualTo("foo"));
-                });
-
-            // Act
-            proxy.Invoke();
-        }
-
         [Test, Ignore]
         public void Should_return_proxy_where_out_parameter_can_be_set()
         {

@@ -9,13 +9,13 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void CallInterceptedEventArgs_should_be_serializable()
         {
-            Assert.That(new CallInterceptedEventArgs(A.Fake<IInterceptedFakeObjectCall>()), Is.BinarySerializable);
+            Assert.That(new CallInterceptedEventArgs(A.Fake<IWritableFakeObjectCall>()), Is.BinarySerializable);
         }
 
         [Test]
         public void Constructor_should_set_call()
         {
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
 
             var args = new CallInterceptedEventArgs(call);
 
@@ -26,7 +26,7 @@ namespace FakeItEasy.Tests.Core
         public void Constructor_should_be_null_guarded()
         {
             NullGuardedConstraint.Assert(() =>
-                new CallInterceptedEventArgs(A.Fake<IInterceptedFakeObjectCall>()));
+                new CallInterceptedEventArgs(A.Fake<IWritableFakeObjectCall>()));
         }
     }
 }

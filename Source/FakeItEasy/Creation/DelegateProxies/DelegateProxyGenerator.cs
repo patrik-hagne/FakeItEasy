@@ -121,7 +121,7 @@ namespace FakeItEasy.Creation.DelegateProxies
         }
 
         class DelegateFakeObjectCall
-            : IWritableFakeObjectCall, ICompletedFakeObjectCall
+            : IWritableFakeObjectCall
         {
             readonly Delegate instance;
 
@@ -147,11 +147,6 @@ namespace FakeItEasy.Creation.DelegateProxies
             public void SetArgumentValue(int index, object value)
             {
                 this.Arguments.GetUnderlyingArgumentsArray()[index] = value;
-            }
-
-            public ICompletedFakeObjectCall AsReadOnly()
-            {
-                return this;
             }
 
             public MethodInfo Method { get; private set; }

@@ -74,14 +74,13 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             A.CallTo(() => this.recorder.IsRecording).Returns(true);
             
             var call = this.CreateFakeCall();
-            var frozenCall = call.AsReadOnly();
-
+            
             // Act
             var rule = this.CreateRule();
             rule.Apply(call);
 
             // Assert
-            A.CallTo(() => this.recorder.RecordCall(frozenCall)).MustHaveHappened();
+            A.CallTo(() => this.recorder.RecordCall(call)).MustHaveHappened();
         }
 
         [TestCase(1)]
@@ -100,10 +99,8 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         private IInterceptedFakeObjectCall CreateFakeCall()
         {
             var call = A.Fake<IInterceptedFakeObjectCall>();
-            var frozenCall = A.Fake<ICompletedFakeObjectCall>();
-
+            
             A.CallTo(() => this.wrappedRule.IsApplicableTo(call)).Returns(true);
-            A.CallTo(() => call.AsReadOnly()).Returns(frozenCall);
 
             return call;
         }
