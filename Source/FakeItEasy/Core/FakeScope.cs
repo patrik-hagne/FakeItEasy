@@ -71,7 +71,6 @@ namespace FakeItEasy.Core
         /// <param name="call">The call that is intercepted.</param>
         internal void AddInterceptedCall(FakeManager fakeManager, ICompletedFakeObjectCall call)
         {
-            fakeManager.AllRecordedCalls.Add(call);
             this.OnAddInterceptedCall(fakeManager, call);
         }
 
@@ -92,7 +91,7 @@ namespace FakeItEasy.Core
             this.OnAddRule(fakeManager, rule);
         }
 
-        internal abstract IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeManager fakeObject);
+        internal abstract IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeManager fakeObject, IEnumerable<ICompletedFakeObjectCall> allRecordedCalls);
 
         protected abstract void OnDispose();
 
@@ -128,7 +127,7 @@ namespace FakeItEasy.Core
                 return this.recordedCalls.GetEnumerator();
             }
 
-            internal override IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeManager fakeObject)
+            internal override IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeManager fakeObject, IEnumerable<ICompletedFakeObjectCall> allRecordedCalls)
             {
                 List<ICompletedFakeObjectCall> calls;
 
@@ -210,9 +209,9 @@ namespace FakeItEasy.Core
                 throw new NotSupportedException();
             }
 
-            internal override IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeManager fakeObject)
+            internal override IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeManager fakeObject, IEnumerable<ICompletedFakeObjectCall> allRecordedCalls)
             {
-                return fakeObject.AllRecordedCalls;
+                return allRecordedCalls;
             }
 
             protected override void OnAddRule(FakeManager fakeObject, CallRuleMetadata rule)

@@ -16,11 +16,12 @@ namespace FakeItEasy.Core
     [Serializable]
     public partial class FakeManager
     {
-        private static readonly Logger logger = Log.GetLogger<FakeManager>();
+        private static readonly Logger Logger = Log.GetLogger<FakeManager>();
+
         private readonly LinkedList<CallRuleMetadata> allUserRulesField;
         private readonly CallRuleMetadata[] postUserRules;
         private readonly CallRuleMetadata[] preUserRules;
-        private readonly List<ICompletedFakeObjectCall> recordedCallsField;
+        private readonly List<ICompletedFakeObjectCall> recordedCalls;
         private WeakReference objectReference;
         private readonly LinkedList<IInterceptionListener> interceptionListeners;
 
@@ -42,7 +43,7 @@ namespace FakeItEasy.Core
                                          new CallRuleMetadata { Rule = new DefaultReturnValueRule() }
                                      };
 
-            this.recordedCallsField = new List<ICompletedFakeObjectCall>();
+            this.recordedCalls = new List<ICompletedFakeObjectCall>();
             this.interceptionListeners = new LinkedList<IInterceptionListener>();
         }
 
@@ -83,15 +84,7 @@ namespace FakeItEasy.Core
         /// </summary>
         public virtual IEnumerable<ICompletedFakeObjectCall> RecordedCallsInScope
         {
-            get { return FakeScope.Current.GetCallsWithinScope(this); }
-        }
-
-        /// <summary>
-        /// Gets a collection of all the calls that has been recorded on this instance.
-        /// </summary>
-        internal ICollection<ICompletedFakeObjectCall> AllRecordedCalls
-        {
-            get { return this.recordedCallsField; }
+            get { return FakeScope.Current.GetCallsWithinScope(this, this.recordedCalls); }
         }
 
         internal LinkedList<CallRuleMetadata> AllUserRules
@@ -163,7 +156,7 @@ namespace FakeItEasy.Core
 
         private static void ApplyRule(CallRuleMetadata rule, IWritableFakeObjectCall fakeObjectCall)
         {
-            logger.Debug("Applying rule {0}.", rule.Rule.ToString());
+            Logger.Debug("Applying rule {0}.", rule.Rule.ToString());
             rule.CalledNumberOfTimes++;
             rule.Rule.Apply(fakeObjectCall);
         }
@@ -180,6 +173,7 @@ namespace FakeItEasy.Core
             }
             finally
             {
+                this.recordedCalls.Add(fakeObjectCall);
                 FakeScope.Current.AddInterceptedCall(this, fakeObjectCall);
 
                 this.OnAfterCallIntercepted(fakeObjectCall, ruleToUse.Rule);
