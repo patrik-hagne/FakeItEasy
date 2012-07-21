@@ -30,7 +30,7 @@
                 return IsObjetMethod(fakeObjectCall);
             }
 
-            public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
+            public void Apply(IWritableFakeObjectCall fakeObjectCall)
             {
                 if (this.TryHandleToString(fakeObjectCall))
                 {
@@ -53,7 +53,7 @@
                 return objectMethodsMethodHandles.Contains(fakeObjectCall.Method.MethodHandle);
             }
 
-            private bool TryHandleGetHashCode(IInterceptedFakeObjectCall fakeObjectCall)
+            private bool TryHandleGetHashCode(IWritableFakeObjectCall fakeObjectCall)
             {
                 if (!fakeObjectCall.Method.MethodHandle.Equals(objectMethodsMethodHandles[2]))
                 {
@@ -65,7 +65,7 @@
                 return true;
             }
 
-            private bool TryHandleToString(IInterceptedFakeObjectCall fakeObjectCall)
+            private bool TryHandleToString(IWritableFakeObjectCall fakeObjectCall)
             {
                 if (!fakeObjectCall.Method.MethodHandle.Equals(objectMethodsMethodHandles[1]))
                 {
@@ -77,7 +77,7 @@
                 return true;
             }
 
-            private bool TryHandleEquals(IInterceptedFakeObjectCall fakeObjectCall)
+            private bool TryHandleEquals(IWritableFakeObjectCall fakeObjectCall)
             {
                 if (!fakeObjectCall.Method.MethodHandle.Equals(objectMethodsMethodHandles[0]))
                 {

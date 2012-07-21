@@ -33,7 +33,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         {
             this.recordedCalls.Add(new CallData(TypeWithOutAndRefFooMethod, new object[] {10, "20" }, 10));
 
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
             A.CallTo(() => call.Method).Returns(TypeWithOutAndRefFooMethod);
             A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(new object[] { 1, "2", null, null }, TypeWithOutAndRefFooMethod));
             
@@ -52,7 +52,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             this.recordedCalls.Add(new CallData(TypeWithOutAndRefFooMethod, new object[] { 10, "20" }, 10));
             this.recordedCalls.Add(new CallData(TypeWithOutAndRefFooMethod, new object[] { 100, "200" }, 100));
 
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
             A.CallTo(() => call.Method).Returns(TypeWithOutAndRefFooMethod);
             A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(new object[] { 1, "2", null, null }, TypeWithOutAndRefFooMethod));
 
@@ -161,9 +161,9 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
                 .MustHaveHappened();
         }
 
-        private IInterceptedFakeObjectCall CreateFakeCall(MethodInfo method)
+        private IWritableFakeObjectCall CreateFakeCall(MethodInfo method)
         {
-            var result = A.Fake<IInterceptedFakeObjectCall>();
+            var result = A.Fake<IWritableFakeObjectCall>();
             A.CallTo(() => result.Method).Returns(method);
 
             return result;

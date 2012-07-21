@@ -33,9 +33,9 @@ namespace FakeItEasy.Configuration
             return true;
         }
 
-        public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
+        public void Apply(IWritableFakeObjectCall fakeObjectCall)
         {
-            fakeObjectCall.DoNotRecordCall();
+            throw new MustBeImplementedException();
 
             this.recordedRule.ApplicableToMethod = fakeObjectCall.Method;
 

@@ -40,7 +40,7 @@ namespace FakeItEasy.Core
                 return EventCall.GetEvent(fakeObjectCall.Method) != null;
             }
 
-            public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
+            public void Apply(IWritableFakeObjectCall fakeObjectCall)
             {
                 var eventCall = EventCall.GetEventCall(fakeObjectCall);
 

@@ -86,7 +86,10 @@ namespace FakeItEasy.Core
             get { return FakeScope.Current.GetCallsWithinScope(this); }
         }
 
-        internal List<ICompletedFakeObjectCall> AllRecordedCalls
+        /// <summary>
+        /// Gets a collection of all the calls that has been recorded on this instance.
+        /// </summary>
+        internal ICollection<ICompletedFakeObjectCall> AllRecordedCalls
         {
             get { return this.recordedCallsField; }
         }
@@ -147,7 +150,7 @@ namespace FakeItEasy.Core
             this.Object = proxy;
             this.FakeObjectType = typeOfFake;
 
-            eventRaiser.CallWasIntercepted += this.Proxy_CallWasIntercepted;
+            eventRaiser.CallWasIntercepted += (_, e) => this.Intercept(e.Call);
         }
 
         /// <summary>
@@ -158,7 +161,7 @@ namespace FakeItEasy.Core
             this.allUserRulesField.Clear();
         }
 
-        private static void ApplyRule(CallRuleMetadata rule, IInterceptedFakeObjectCall fakeObjectCall)
+        private static void ApplyRule(CallRuleMetadata rule, IWritableFakeObjectCall fakeObjectCall)
         {
             logger.Debug("Applying rule {0}.", rule.Rule.ToString());
             rule.CalledNumberOfTimes++;
@@ -167,34 +170,46 @@ namespace FakeItEasy.Core
 
         private void Intercept(IWritableFakeObjectCall fakeObjectCall)
         {
+            this.OnBeforeCallIntercepted(fakeObjectCall);
+
+            var ruleToUse = this.SelectRuleToUse(fakeObjectCall);
+
+            try
+            {
+                ApplyRule(ruleToUse, fakeObjectCall);
+            }
+            finally
+            {
+                FakeScope.Current.AddInterceptedCall(this, fakeObjectCall);
+
+                this.OnAfterCallIntercepted(fakeObjectCall, ruleToUse.Rule);
+            }
+        }
+
+        private void OnAfterCallIntercepted(IWritableFakeObjectCall fakeObjectCall, IFakeObjectCallRule ruleThatHandledCall)
+        {
+            foreach (var listener in this.interceptionListeners.Reverse())
+            {
+                listener.OnAfterCallIntercepted(fakeObjectCall, ruleThatHandledCall);
+            }
+        }
+
+        private void OnBeforeCallIntercepted(IWritableFakeObjectCall fakeObjectCall)
+        {
             foreach (var listener in this.interceptionListeners)
             {
                 listener.OnBeforeCallIntercepted(fakeObjectCall);
             }
+        }
 
-            var ruleToUse =
-                (from rule in this.AllRules
-                 where rule.Rule.IsApplicableTo(fakeObjectCall) && rule.HasNotBeenCalledSpecifiedNumberOfTimes()
-                 select rule).First();
+        private CallRuleMetadata SelectRuleToUse(IWritableFakeObjectCall fakeObjectCall)
+        {
+            var matchingRules = 
+                from rule in this.AllRules
+                where rule.Rule.IsApplicableTo(fakeObjectCall) && rule.HasNotBeenCalledSpecifiedNumberOfTimes()
+                select rule;
 
-            var interceptedCall = new InterceptedCallAdapter(fakeObjectCall);
-
-            try
-            {
-                ApplyRule(ruleToUse, interceptedCall);
-            }
-            finally
-            {
-                if (!interceptedCall.IgnoreCallInRecording)
-                {
-                    FakeScope.Current.AddInterceptedCall(this, fakeObjectCall);
-                }
-
-                foreach (var listener in this.interceptionListeners.Reverse())
-                {
-                    listener.OnAfterCallIntercepted(fakeObjectCall, ruleToUse.Rule);
-                }
-            }
+            return matchingRules.First();
         }
 
         private void MoveRuleToFront(CallRuleMetadata rule)
@@ -209,64 +224,6 @@ namespace FakeItEasy.Core
         {
             var metadata = this.AllRules.Where(x => x.Rule.Equals(rule)).Single();
             this.MoveRuleToFront(metadata);
-        }
-
-        private void Proxy_CallWasIntercepted(object sender, CallInterceptedEventArgs e)
-        {
-            this.Intercept(e.Call);
-        }
-        
-        private class InterceptedCallAdapter
-            : IInterceptedFakeObjectCall
-        {
-            private readonly IWritableFakeObjectCall call;
-
-            public InterceptedCallAdapter(IWritableFakeObjectCall call)
-            {
-                this.call = call;
-            }
-
-            public bool IgnoreCallInRecording { get; private set; }
-
-            public MethodInfo Method
-            {
-                get { return this.call.Method; }
-            }
-
-            public ArgumentCollection Arguments
-            {
-                get { return this.call.Arguments; }
-            }
-
-            public object FakedObject
-            {
-                get { return this.call.FakedObject; }
-            }
-
-            public void SetReturnValue(object value)
-            {
-                this.call.SetReturnValue(value);
-            }
-
-            public void CallBaseMethod()
-            {
-                this.call.CallBaseMethod();
-            }
-
-            public void SetArgumentValue(int index, object value)
-            {
-                this.call.SetArgumentValue(index, value);
-            }
-
-            public void DoNotRecordCall()
-            {
-                this.IgnoreCallInRecording = true;
-            }
-
-            public object ReturnValue
-            {
-                get { return this.call.ReturnValue; }
-            }
         }
     }
 }

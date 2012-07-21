@@ -34,7 +34,7 @@ namespace FakeItEasy.Tests.Configuration
             this.rule.Applicator = x => { };
 
             // Act
-            this.rule.Apply(A.Fake<IInterceptedFakeObjectCall>());
+            this.rule.Apply(A.Fake<IWritableFakeObjectCall>());
             
             // Assert
             Assert.That(firstWasCalled, Is.True);
@@ -46,7 +46,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             
 
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
             IFakeObjectCall passedCall = null;
 
             this.rule.Applicator = x => { };
@@ -62,7 +62,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             
 
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
 
             this.rule.Applicator = x => { };
             this.rule.CallBaseMethod = true;
@@ -81,7 +81,7 @@ namespace FakeItEasy.Tests.Configuration
             this.rule.OutAndRefParametersValues = new object[] { 1, "foo" };
             this.rule.Applicator = x => { };
 
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
             
             A.CallTo(() => call.Method).Returns(typeof(IOutAndRef).GetMethod("OutAndRef"));
 
@@ -100,7 +100,7 @@ namespace FakeItEasy.Tests.Configuration
             this.rule.OutAndRefParametersValues = new object[] { 1, "foo", "bar" };
             this.rule.Applicator = x => { };
 
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
             A.CallTo(() => call.Method).Returns(typeof(IOutAndRef).GetMethod("OutAndRef"));
             
             var ex = Assert.Throws<InvalidOperationException>(() =>

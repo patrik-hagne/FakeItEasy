@@ -39,12 +39,12 @@ namespace FakeItEasy.Tests.TestHelpers
             return ServiceLocator.Current.Resolve<IExpressionCallMatcherFactory>().CreateCallMathcer(expression);
         }
 
-        public static IInterceptedFakeObjectCall CreateFakeCall<TFake, Treturn>(Expression<Func<TFake, Treturn>> callSpecification)
+        public static IWritableFakeObjectCall CreateFakeCall<TFake, Treturn>(Expression<Func<TFake, Treturn>> callSpecification)
         {
             return CreateFakeCall(A.Fake<TFake>(), (LambdaExpression)callSpecification);
         }
 
-        public static IInterceptedFakeObjectCall CreateFakeCall<TFake>(Expression<Action<TFake>> callSpecification)
+        public static IWritableFakeObjectCall CreateFakeCall<TFake>(Expression<Action<TFake>> callSpecification)
         {
             return CreateFakeCall(A.Fake<TFake>(), (LambdaExpression)callSpecification);
         }
@@ -70,9 +70,9 @@ namespace FakeItEasy.Tests.TestHelpers
             return methodExpression.Arguments[argumentIndex];
         }
 
-        private static IInterceptedFakeObjectCall CreateFakeCall<TFake>(TFake fakedObject, LambdaExpression callSpecification)
+        private static IWritableFakeObjectCall CreateFakeCall<TFake>(TFake fakedObject, LambdaExpression callSpecification)
         {
-            var result = A.Fake<IInterceptedFakeObjectCall>();
+            var result = A.Fake<IWritableFakeObjectCall>();
             var frozen = A.Fake<ICompletedFakeObjectCall>();
 
             A.CallTo(() => result.Method).Returns(GetMethodInfo(callSpecification));
@@ -85,7 +85,7 @@ namespace FakeItEasy.Tests.TestHelpers
             A.CallTo(() => frozen.Arguments).Returns(CreateArgumentCollection(fakedObject, callSpecification));
 
             A.CallTo(() => frozen.ReturnValue)
-                .ReturnsLazily(x => Fake.GetCalls(result).Matching<IInterceptedFakeObjectCall>(c => c.SetReturnValue(A<object>._)).Last().Arguments[0]);
+                .ReturnsLazily(x => Fake.GetCalls(result).Matching<IWritableFakeObjectCall>(c => c.SetReturnValue(A<object>._)).Last().Arguments[0]);
 
             return result;
         }

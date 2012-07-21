@@ -50,7 +50,7 @@
         /// an exception.
         /// </summary>
         /// <param name="fakeObjectCall">The call to apply the interceptor to.</param>
-        public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
+        public void Apply(IWritableFakeObjectCall fakeObjectCall)
         {
             if (this.recorder.IsRecording)
             {

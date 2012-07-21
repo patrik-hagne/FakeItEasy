@@ -69,7 +69,7 @@ namespace FakeItEasy.Tests.Expressions
         [Test]
         public void Apply_should_call_the_applicator_with_the_incoming_call()
         {
-            IInterceptedFakeObjectCall callPassedToApplicator = null;
+            IWritableFakeObjectCall callPassedToApplicator = null;
             var callPassedToRule = FakeCall.Create<IFoo>("Bar");
 
             var rule = CreateRule<IFoo>(x => x.Bar());

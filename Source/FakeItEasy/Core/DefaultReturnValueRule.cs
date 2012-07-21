@@ -22,14 +22,14 @@
             return true;
         }
 
-        public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
+        public void Apply(IWritableFakeObjectCall fakeObjectCall)
         {
             var returnValue = ResolveReturnValue(fakeObjectCall);
 
             fakeObjectCall.SetReturnValue(returnValue);
         }
 
-        private static object ResolveReturnValue(IInterceptedFakeObjectCall fakeObjectCall)
+        private static object ResolveReturnValue(IWritableFakeObjectCall fakeObjectCall)
         {
             object result = null;
 

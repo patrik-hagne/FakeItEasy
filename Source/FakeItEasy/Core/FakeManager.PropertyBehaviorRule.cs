@@ -44,7 +44,7 @@
                 return this.IsPropertySetter(fakeObjectCall) || this.IsPropertyGetter(fakeObjectCall);
             }
 
-            public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
+            public void Apply(IWritableFakeObjectCall fakeObjectCall)
             {
                 if (this.IsPropertyGetter(fakeObjectCall))
                 {

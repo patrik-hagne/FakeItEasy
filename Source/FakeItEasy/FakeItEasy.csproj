@@ -328,9 +328,6 @@
     <Compile Include="Core\IFixtureInitializer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\IInterceptedFakeObjectCall.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="IOutputWriter.cs" />
     <Compile Include="Core\IWritableFakeObjectCall.cs">
       <SubType>Code</SubType>

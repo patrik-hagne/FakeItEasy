@@ -26,7 +26,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         [TestCase(false)]
         public void IsApplicable_should_return_value_from_wrapped_rule(bool wrappedRuleIsApplicable)
         {
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
 
             A.CallTo(() => this.wrappedRule.IsApplicableTo(call))
                 .Returns(wrappedRuleIsApplicable);
@@ -96,9 +96,9 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             Assert.That(rule.NumberOfTimesToCall, Is.EqualTo(numberOfTimesToCallWrappedRule));
         }
 
-        private IInterceptedFakeObjectCall CreateFakeCall()
+        private IWritableFakeObjectCall CreateFakeCall()
         {
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
             
             A.CallTo(() => this.wrappedRule.IsApplicableTo(call)).Returns(true);
 

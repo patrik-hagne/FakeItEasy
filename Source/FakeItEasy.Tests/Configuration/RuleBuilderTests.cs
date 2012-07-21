@@ -51,7 +51,7 @@
         public void Returns_called_with_value_sets_applicator_to_a_function_that_applies_that_value_to_interceptor()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
 
             returnConfig.Returns(10);
 
@@ -76,7 +76,7 @@
             var config = this.CreateTestableReturnConfiguration();
 
             var returnConfig = this.CreateTestableReturnConfiguration();
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
             A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(
                 new object[] { 1, 2 },
                 new string[] { "foo", "bar" }));
@@ -114,7 +114,7 @@
             this.builder.Throws(x => exception);
 
             Assert.Throws<FormatException>(() =>
-                this.ruleProducedByFactory.Applicator(A.Fake<IInterceptedFakeObjectCall>()));
+                this.ruleProducedByFactory.Applicator(A.Fake<IWritableFakeObjectCall>()));
         }
 
         [Test]
@@ -135,7 +135,7 @@
             returnConfig.Throws(x => exception);
             
             var thrown = Assert.Throws<FormatException>(() =>
-                this.ruleProducedByFactory.Applicator(A.Fake<IInterceptedFakeObjectCall>()));
+                this.ruleProducedByFactory.Applicator(A.Fake<IWritableFakeObjectCall>()));
             Assert.That(thrown, Is.SameAs(exception));
         }
 
@@ -144,7 +144,7 @@
         {
             // Arrange
             var factory = A.Fake<Func<IFakeObjectCall, Exception>>();
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
 
             // Act
             this.builder.Throws(factory);
@@ -163,7 +163,7 @@
             // Arrange
             var config = this.CreateTestableReturnConfiguration();
             var factory = A.Fake<Func<IFakeObjectCall, Exception>>();
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
 
             // Act
             config.Throws(factory);
@@ -207,7 +207,7 @@
         {
             this.builder.DoesNothing();
 
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
             Any.CallTo(call).Throws(new AssertionException("Applicator should do nothing."));
             
             this.builder.RuleBeingBuilt.Applicator(call);

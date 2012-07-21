@@ -51,13 +51,13 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             var rule = this.CreateRule();
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
 
             // Act
             rule.Apply(call);
 
             // Assert
-            A.CallTo(() => call.DoNotRecordCall()).MustHaveHappened();
+            Assert.Fail();
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace FakeItEasy.Tests.Configuration
 
             var rule = this.CreateRule();
 
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
             A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("call description");
 
             rule.Apply(call);
@@ -84,7 +84,7 @@ namespace FakeItEasy.Tests.Configuration
 
             var rule = this.CreateRule();
 
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
             A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("call description");
 
             rule.Apply(call);
@@ -108,7 +108,7 @@ namespace FakeItEasy.Tests.Configuration
 
             var rule = this.CreateRule();
 
-            var call = A.Fake<IInterceptedFakeObjectCall>();
+            var call = A.Fake<IWritableFakeObjectCall>();
             A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("call description");
 
             rule.Apply(call);
@@ -133,7 +133,7 @@ namespace FakeItEasy.Tests.Configuration
 
             var rule = this.CreateRule();
 
-            rule.Apply(A.Fake<IInterceptedFakeObjectCall>());
+            rule.Apply(A.Fake<IWritableFakeObjectCall>());
 
             Assert.That(this.argumentUsedForAsserterFactory, Is.EquivalentTo(this.fakeObject.RecordedCallsInScope));
         }

@@ -26,7 +26,7 @@
                 return PropertyBehaviorRule.IsPropertyGetter(fakeObjectCall.Method) && TypeIsFakable(fakeObjectCall.Method.ReturnType);
             }
 
-            public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
+            public void Apply(IWritableFakeObjectCall fakeObjectCall)
             {
                 var newRule = new CallRuleMetadata
                                   {

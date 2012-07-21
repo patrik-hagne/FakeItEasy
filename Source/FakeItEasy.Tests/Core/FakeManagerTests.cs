@@ -280,7 +280,7 @@
 
             (fake.Object as IFoo).Bar();
 
-            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>._)).MustNotHaveHappened();
+            A.CallTo(() => rule.Apply(A<IWritableFakeObjectCall>._)).MustNotHaveHappened();
         }
 
         [Test]
@@ -499,19 +499,18 @@
         [Test]
         public void Call_should_not_be_recorded_when_DoNotRecordCall_has_been_called()
         {
-            // Arrange
-            var fake = A.Fake<IFoo>();
-            var rule = A.Fake<IFakeObjectCallRule>();
-            A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>._)).Returns(true);
-            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>._)).Invokes(x => x.Arguments.Get<IInterceptedFakeObjectCall>(0).DoNotRecordCall());
+            //// Arrange
+            //var fake = A.Fake<IFoo>();
+            //var rule = A.Fake<IFakeObjectCallRule>();
+            //A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>._)).Returns(true);
             
-            Fake.GetFakeManager(fake).AddRuleFirst(rule);
+            //Fake.GetFakeManager(fake).AddRuleFirst(rule);
 
-            // Act
-            fake.Bar();
+            //// Act
+            //fake.Bar();
 
             // Assert
-            Assert.That(Fake.GetCalls(fake), Is.Empty);
+            Assert.Fail();
         }
 
         [Test]
@@ -563,7 +562,7 @@
 
             eventRaiser.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(call)).Now;
 
-            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>._)).MustHaveHappened();
+            A.CallTo(() => rule.Apply(A<IWritableFakeObjectCall>._)).MustHaveHappened();
         }
 
         [Test]
@@ -632,7 +631,7 @@
 
             var selectedRule = A.Fake<IFakeObjectCallRule>();
             A.CallTo(() => selectedRule.IsApplicableTo(interceptedCall)).Returns(true);
-            A.CallTo(() => selectedRule.Apply(A<IInterceptedFakeObjectCall>._)).Throws(new Exception());
+            A.CallTo(() => selectedRule.Apply(A<IWritableFakeObjectCall>._)).Throws(new Exception());
 
             manager.AddRuleFirst(selectedRule);
             manager.AddInterceptionListener(listener);
