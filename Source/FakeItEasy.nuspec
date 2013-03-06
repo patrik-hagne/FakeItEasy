@@ -3,8 +3,8 @@
   <metadata>
     <id>FakeItEasy</id>
     <title>Fake it Easy!</title>
-    <projectUrl>http://code.google.com/p/fakeiteasy/</projectUrl>
-    <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
+    <projectUrl>https://github.com/FakeItEasy/FakeItEasy/</projectUrl>
+    <licenseUrl>https://github.com/FakeItEasy/FakeItEasy/blob/master/License.txt</licenseUrl>
     <version>0.0.0</version>
     <authors>Patrik Hägne</authors>
     <owners>Patrik Hägne</owners>
