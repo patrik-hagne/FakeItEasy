@@ -497,20 +497,57 @@
         }
         
         [Test]
-        public void Call_should_not_be_recorded_when_DoNotRecordCall_has_been_called()
+        public void Call_should_not_exist_among_recorded_calls_when_removed()
         {
-            //// Arrange
-            //var fake = A.Fake<IFoo>();
-            //var rule = A.Fake<IFakeObjectCallRule>();
-            //A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>._)).Returns(true);
+            // Arrange
+            var fake = A.Fake<IFoo>();
+            fake.Bar();
+
+            var call = Fake.GetFakeManager(fake).RecordedCallsInScope.First();
             
-            //Fake.GetFakeManager(fake).AddRuleFirst(rule);
+            // Act
+            Fake.GetFakeManager(fake).RemoveCall(call);
 
-            //// Act
-            //fake.Bar();
+            //Assert
+            Assert.That(Fake.GetFakeManager(fake).RecordedCallsInScope, Has.None.EqualTo(call));
+        }
 
-            // Assert
-            Assert.Fail();
+        [Test]
+        public void Call_should_not_exist_among_recorded_calls_in_scope_when_removed()
+        {
+            using (var scope = Fake.CreateScope())
+            {
+                // Arrange
+                var fake = A.Fake<IFoo>();
+                fake.Bar();
+
+                var call = Fake.GetFakeManager(fake).RecordedCallsInScope.First();
+
+                // Act
+                Fake.GetFakeManager(fake).RemoveCall(call);
+
+                //Assert
+                Assert.That(Fake.GetFakeManager(fake).RecordedCallsInScope, Has.None.EqualTo(call));
+            }
+        }
+
+        [Test]
+        public void Call_should_not_exist_in_scope_when_removed()
+        {
+            using (var scope = Fake.CreateScope())
+            {
+                // Arrange
+                var fake = A.Fake<IFoo>();
+                fake.Bar();
+
+                var call = Fake.GetFakeManager(fake).RecordedCallsInScope.First();
+
+                // Act
+                Fake.GetFakeManager(fake).RemoveCall(call);
+
+                //Assert
+                Assert.That(scope, Has.None.EqualTo(call));
+            }
         }
 
         [Test]

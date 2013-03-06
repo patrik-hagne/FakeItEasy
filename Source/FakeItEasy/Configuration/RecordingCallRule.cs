@@ -35,7 +35,7 @@ namespace FakeItEasy.Configuration
 
         public void Apply(IWritableFakeObjectCall fakeObjectCall)
         {
-            throw new MustBeImplementedException();
+            this.fakeManager.RemoveCall(fakeObjectCall);
 
             this.recordedRule.ApplicableToMethod = fakeObjectCall.Method;
 

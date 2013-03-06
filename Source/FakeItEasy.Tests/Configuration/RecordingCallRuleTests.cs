@@ -22,7 +22,7 @@ namespace FakeItEasy.Tests.Configuration
         public void SetUp()
         {
             this.fakedObject = A.Fake<IFoo>();
-            this.fakeObject = Fake.GetFakeManager(fakedObject);
+            this.fakeObject = A.Fake<FakeManager>();
             this.recordedRule = A.Fake<RecordedCallRule>(x => x.WithArgumentsForConstructor(() => new RecordedCallRule(A.Fake<MethodInfoManager>())));
             this.callFormatter = A.Fake<IFakeObjectCallFormatter>();
 
@@ -47,7 +47,7 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Test]
-        public void Apply_should_call_DoNotRecordCall()
+        public void Apply_should_remove_recorded_call()
         {
             // Arrange
             var rule = this.CreateRule();
@@ -57,7 +57,7 @@ namespace FakeItEasy.Tests.Configuration
             rule.Apply(call);
 
             // Assert
-            Assert.Fail();
+            A.CallTo(() => this.fakeObject.RemoveCall(call)).MustHaveHappened();
         }
 
         [Test]

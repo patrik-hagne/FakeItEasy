@@ -154,6 +154,12 @@ namespace FakeItEasy.Core
             this.allUserRulesField.Clear();
         }
 
+        public virtual void RemoveCall(ICompletedFakeObjectCall call)
+        {
+            this.recordedCalls.Remove(call);
+            FakeScope.Current.RemoveInterceptedCall(this, call);
+        }
+
         private static void ApplyRule(CallRuleMetadata rule, IWritableFakeObjectCall fakeObjectCall)
         {
             Logger.Debug("Applying rule {0}.", rule.Rule.ToString());
@@ -163,18 +169,20 @@ namespace FakeItEasy.Core
 
         private void Intercept(IWritableFakeObjectCall fakeObjectCall)
         {
+            this.recordedCalls.Add(fakeObjectCall);
+            FakeScope.Current.AddInterceptedCall(this, fakeObjectCall);
+
             this.OnBeforeCallIntercepted(fakeObjectCall);
 
             var ruleToUse = this.SelectRuleToUse(fakeObjectCall);
-
+            
             try
-            {
+            {                
                 ApplyRule(ruleToUse, fakeObjectCall);
             }
             finally
             {
-                this.recordedCalls.Add(fakeObjectCall);
-                FakeScope.Current.AddInterceptedCall(this, fakeObjectCall);
+                
 
                 this.OnAfterCallIntercepted(fakeObjectCall, ruleToUse.Rule);
             }

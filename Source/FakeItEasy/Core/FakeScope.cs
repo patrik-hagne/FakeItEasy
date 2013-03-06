@@ -175,6 +175,12 @@ namespace FakeItEasy.Core
                 calls.Add(call);
             }
 
+            public override void RemoveInterceptedCall(FakeManager fakeManager, ICompletedFakeObjectCall call)
+            {
+                this.recordedCalls.Remove(call);
+                this.recordedCallsGroupedByFakeManager[fakeManager].Remove(call);
+            }
+
             private void RemoveRulesConfiguredInScope()
             {
                 foreach (var objectRules in this.rulesField)
@@ -225,6 +231,12 @@ namespace FakeItEasy.Core
             protected override void OnAddInterceptedCall(FakeManager fakeObject, ICompletedFakeObjectCall call)
             {
             }
+
+            public override void RemoveInterceptedCall(FakeManager fakeManager, ICompletedFakeObjectCall call)
+            {
+            }
         }
+
+        public abstract void RemoveInterceptedCall(FakeManager fakeManager, ICompletedFakeObjectCall call);
     }
 }
